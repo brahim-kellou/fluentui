@@ -39,13 +39,18 @@ export function ax(): string {
 
   for (let i = 0; i < arguments.length; i++) {
     // eslint-disable-next-line prefer-rest-params
-    const cls = arguments[i];
+    const argument = arguments[i];
 
-    if (!cls) {
+    if (!argument) {
       continue;
     }
 
-    const classGroups = cls.split(' ');
+    // TODO: if (process.env && typeof !== string) throw new Error()
+
+    // .split() is an expensive call, it's faster to ensure that string contains any spaces before splitting
+    // TODO: if (classNames.indexOf(' ') === -1) {
+
+    const classGroups = argument.split(' ');
 
     for (let x = 0; x < classGroups.length; x++) {
       const atomicClassName = classGroups[x];
