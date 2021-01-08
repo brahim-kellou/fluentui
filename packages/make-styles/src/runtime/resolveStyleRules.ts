@@ -36,8 +36,11 @@ export function resolveStyleRules(
       const key = pseudo + media + support + property;
 
       // trimming of values is required to generate consistent hashes
-      const classNameHash = hashString(pseudo + media + support + property + value.toString().trim());
-      const className = HASH_PREFIX + classNameHash + (unstable_cssPriority === 0 ? '' : unstable_cssPriority);
+      const propertyHash = hashString(pseudo + media + support + property).slice(0, 4);
+      const valueHash = hashString(value.toString().trim()).slice(0, 4);
+
+      const className =
+        HASH_PREFIX + propertyHash + valueHash + (unstable_cssPriority === 0 ? '' : unstable_cssPriority);
 
       const css = compileCSS({
         className,
@@ -46,7 +49,7 @@ export function resolveStyleRules(
         property,
         support,
         value,
-        unstable_cssPriority
+        unstable_cssPriority,
       });
 
       const rtl = convertProperty(property, value);
@@ -60,7 +63,7 @@ export function resolveStyleRules(
           property: rtl.key,
           support,
           value: rtl.value,
-          unstable_cssPriority
+          unstable_cssPriority,
         });
 
         // There is no sense to store RTL className as it's "r" + regular className
